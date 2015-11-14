@@ -7,8 +7,6 @@ The app is based on Polymer Starter Kit, so everything below is applied to this 
 ### Live demo: [https://emojify-polymer.firebaseapp.com](https://emojify-polymer.firebaseapp.com)
 
 
-> A starting point for building web applications with Polymer 1.0
-
 ### Included out of the box:
 
 * [Polymer](http://polymer-project.org), [Paper](https://elements.polymer-project.org/browse?package=paper-elements), [Iron](https://elements.polymer-project.org/browse?package=iron-elements) and [Neon](https://elements.polymer-project.org/browse?package=neon-elements) elements
