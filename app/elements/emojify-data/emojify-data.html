@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../../bower_components/firebase-element/firebase-collection.html">
+
+<dom-module id="emojify-data">
+    <template>
+        <firebase-collection id="firebase" data="{{fbEmojifiedMessages}}" on-firebase-value="_firebaseLoaded" location="[[firebaseLocation]]"></firebase-collection>
+        <iron-localstorage name="polymer-emojify" on-iron-localstorage-load="_backupLoaded" value="{{backupEmojifiedMessages}}"></iron-localstorage>
+    </template>
+    <script>
+        (function() {
+            'use strict';
+
+            Polymer({
+                is: 'emojify-data',
+
+                properties: {
+                    emojifiedMessages: {
+                        type: Array,
+                        notify: true
+                    },
+                    _firebaseLoaded: {
+                        type: Boolean,
+                        value: false
+                    }
+                },
+                ready: function() {
+                    this.firebaseLocation = 'https://emojify-polymer.firebaseio.com/emojifiedMessages';
+                },
+                add: function(message) {
+                    this.$.firebase.add(message);
+                },
+                _firebaseLoaded: function() {
+                    this._firebaseConnected = true;
+                    this.emojifiedMessages = this.fbEmojifiedMessages;
+                    this.backupEmojifiedMessages = this.fbEmojifiedMessages;
+                    this.linkPaths('fbEmojifiedMessages', 'emojifiedMessages');
+                    this.linkPaths('backupEmojifiedMessages', 'emojifiedMessages');
+                },
+                _backupLoaded: function() {
+                    if (!this._firebaseConnected) {
+                        this.emojifiedMessages = this.backupEmojifiedMessages.slice();
+                    }
+                }
+            });
+        })();
+    </script>
+</dom-module>

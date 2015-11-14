@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../emojify-data/emojify-data.html">
+<link rel="import" href="../emojify-text/emojify-text.html">
+
+<dom-module id="emojify-history">
+    <template>
+        <style include="shared-styles"></style>
+        <style>
+            :host {
+                display: block;
+            }
+
+            .author {
+                font-size: 0.85em;
+                color: var(--secondary-text-color);
+                font-style: italic;
+            }
+        </style>
+        <p class="no-more-msg" hidden="[[emojifiedMessages.length]]">No messages so far... Be the first!</p>
+        <div class="layout vertical-reverse">
+            <template is="dom-repeat" items="{{emojifiedMessages}}" as="message">
+                <paper-material elevation="1">
+                    <emojify-text text="[[message.body]]"></emojify-text>
+                    <p class="author">by [[message.author]]
+                        <time is="time-ago" datetime$="[[_getDate(message.timestamp)]]"></time>
+                    </p>
+                </paper-material>
+            </template>
+        </div>
+        <emojify-data emojified-messages="{{emojifiedMessages}}"></emojify-data>
+    </template>
+    <script src="../../bower_components/time-elements/time-elements.js"></script>
+    <script>
+        (function() {
+            'use strict';
+
+            Polymer({
+                is: 'emojify-history',
+
+                _getDate: function(timestamp) {
+                    return new Date(timestamp);
+                }
+            });
+        })();
+    </script>
+</dom-module>

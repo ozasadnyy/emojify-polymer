@@ -1,0 +1,9 @@
+{
+  "firebase": "emojify-polymer",
+  "public": "dist",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

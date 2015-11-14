@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../emojify-text/emojify-text.html">
+
+<dom-module id="emojify-input">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            paper-button {
+                background: var(--default-primary-color);
+                color: var(--text-primary-color);
+            }
+
+            paper-button[disabled] {
+                background: var(--light-primary-color);
+            }
+        </style>
+        <div class="layout vertical">
+            <paper-checkbox checked="{{viewSupported}}">View supported emojis</paper-checkbox>
+            <paper-input label="Author" value="{{message.author}}"></paper-input>
+            <paper-input label="Text to emojify" value="{{text::change}}"></paper-input>
+            <emojify-text text="{{text}}" rendered-text="{{message.body}}" view-supported="{{viewSupported}}"></emojify-text>
+            <paper-button class="save-button self-end" raised on-tap='saveRenderedText' disabled="{{_isEmptyString(message.body)}}">Save</paper-button>
+        </div>
+        <paper-toast id="saved" class="toast" duration="6000" text="Message has been saved"></paper-toast>
+        <emojify-data id="emojiData"></emojify-data>
+    </template>
+    <script>
+        (function() {
+            'use strict';
+
+            Polymer({
+                is: 'emojify-input',
+
+                properties: {
+                    message: {
+                        type: Object,
+                        value: {}
+                    }
+                },
+                ready: function() {
+                    this.viewSupported = false;
+                },
+                saveRenderedText: function() {
+                    this.message.timestamp = new Date().getTime();
+                    this.message.author = !this._isEmptyString(this.message.author) ?
+                        this.message.author : 'Anonymous';
+                    this.$.emojiData.add(this.message);
+                    this.$.saved.show();
+                },
+                _isEmptyString: function(text) {
+                    return (!text || text.length === 0 || !text.trim());
+                }
+            });
+        })();
+    </script>
+</dom-module>
